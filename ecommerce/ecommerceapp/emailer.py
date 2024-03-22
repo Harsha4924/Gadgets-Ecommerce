@@ -4,8 +4,6 @@ import smtplib
 from email.message import EmailMessage
 
 
-# from_email = 'checkharsha29@gmail.com'
-# password='ywxe szws nnmc jovi'
 
 from_email = emailer2.user
 password = emailer2.password
