@@ -1,4 +1,4 @@
 
-user = "checkharsha29@gmail.com"
+user = "your_email"
 
-password = "ywxe szws nnmc jovi"
+password = "your_email_password"
