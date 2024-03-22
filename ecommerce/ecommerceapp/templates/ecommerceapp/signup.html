@@ -1,0 +1,51 @@
+{% extends "ecommerceapp/base.html" %}
+{% load static %}
+{% block style%} 
+<style>
+    .check{
+        margin-bottom: 10px;
+        display: flex;
+        align-items : center;
+    }
+    .upside{
+        margin-top: -20px;
+    }
+    label{
+        margin-right: 30px;
+        font-size: 14px;
+        text-align: left !important;
+    }
+    .check_2{
+        margin-bottom: 20px;
+    }
+    .card{
+        margin-top: 100px;
+    }
+    
+</style>
+{% endblock style%}
+{% block content %}
+
+<div class="card bg-light p-4">
+    <h3 class="text-dark">Sign Up</h3>
+    <form class="upside" method="post" action="{% url 'signup' %}">
+        {% csrf_token %}
+        <label for="email">Email</label>
+        <div class="form-group check">
+            <input type="email" class="form-control" id="email" name="email" required>
+        </div>
+        <label for="password">Password</label>
+        <div class="form-group check">
+            <input type="password" class="form-control" id="password" name="password">
+        </div>
+        <label for="confirm_password">Confirm Password</label>
+        <div class="form-group check">
+            <input type="password" class="form-control" id="confirm_password" name="confirm_password">
+        </div>
+        <button type="submit" class="btn btn-dark check_2">SignIn</button>
+        <br />
+        Already User? <a href="/">Login</a>
+        <br />
+    </form>
+</div>
+{% endblock content %}

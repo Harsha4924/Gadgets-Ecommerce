@@ -1,0 +1,9 @@
+{% autoescape off %}
+
+Hi {{primary_key.email}}
+Please Click This Link below to verify your account
+
+
+http://{{domain}}{% url 'activate' uidb64=uid token=token %}
+
+{% endautoescape %}

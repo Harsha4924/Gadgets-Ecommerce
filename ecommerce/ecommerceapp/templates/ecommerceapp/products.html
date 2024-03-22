@@ -1,0 +1,210 @@
+{% extends 'ecommerceapp/base.html'%}
+
+{% block style%} 
+<style>
+
+    {% comment %} <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" /> {% endcomment %}
+
+
+    .images{
+        height: 250px;
+        width: 250px;
+    }
+    .section-title p {
+        width: -webkit-fill-available;
+    }
+    button:not(:disabled) {
+        cursor: pointer;
+        width: 100%;
+    }
+
+
+    .portfolio #portfolio-flters {
+        padding: 0;
+        margin: 0 auto 25px auto;
+        list-style: none;
+        text-align: center;
+        border-radius: 50px;
+    }
+      
+    .portfolio #portfolio-flters li {
+        cursor: pointer;
+        display: inline-block;
+        padding: 7px 17px 9px 17px;
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 1;
+        color: #444444;
+        margin: 0 3px 10px 3px;
+        transition: all ease-in-out 0.3s;
+        background: #ede9e9;
+        border-radius: 50px;
+    }
+    
+    .portfolio #portfolio-flters li:hover,
+    .portfolio #portfolio-flters li.filter-active {
+        color: #fff;
+        background: #e43c5c;
+    }
+    
+    .portfolio #portfolio-flters li:last-child {
+        margin-right: 0;
+    }
+
+    .check_height{
+        height: 580px !important;
+    }
+
+    .toast-container {
+        position: fixed;
+        top: 20px; /* Adjust the top position as needed */
+        right: 20px; /* Adjust the right position as needed */
+        z-index: 1000; /* Ensure the toast appears above other content */
+    }
+    
+    .toast {
+        position: relative;
+        display: inline-block;
+        background-color: #333; /* Background color of the toast */
+        color: #fff; /* Text color of the toast */
+        padding: 10px 20px; /* Adjust padding as needed */
+        border-radius: 5px; /* Adjust border radius as needed */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Add shadow for depth */
+    }
+    
+    .toast-heading {
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+    
+    .toast-icon {
+        margin-right: 10px; /* Spacing between icon and text */
+    }
+    
+    /* Additional styles for different types of toast messages */
+    .toast-info { background-color: #3498db; }
+    .toast-success { background-color: #2ecc71; }
+    .toast-warning { background-color: #f39c12; }
+    .toast-error { background-color: #e74c3c; }
+    
+      
+</style>
+{% endblock style%}
+{% block content %}
+<h1>Welcome to Ton world</h1>
+{% endblock content %}
+{% block body %}
+
+<section id="portfolio" class="portfolio">
+    <div class="container">
+        <div class="section-title">
+            <h2>Welcome to the Ton World</h2>
+            <h3 class="mb-3">Check our <span>Products</span></h3>
+            {{user_id}}
+            <div class="row">
+                <div class="col-lg-12 d-flex justify-content-center">
+                  <ul id="portfolio-flters">
+                    <li data-filter="*" class="filter-active">All</li>
+                    <li data-filter=".camera">Camera</li>
+                    <li data-filter=".Laptop">Laptop</li>
+                    <li data-filter=".Mobile">Mobile</li>
+                  </ul>
+                </div>
+            </div>
+
+
+            <div class="row row-cols-1 row-cols-md-3 portfolio-container">
+                {% for product in products %}
+                <div class="col mb-4 portfolio-item {% if product.category == 'camera'%}camera{%elif product.category == 'Laptop'%}Laptop{% else %}Mobile{% endif %}">
+                    <div class="card check_height">
+                        <div class="card-body d-flex flex-column">
+                            <div class="text-center mb-3">
+                                <img class="images card-image-top" src="data:image/jpeg;base64,{{ product.image }}" alt="Product Image">
+                            </div>
+                            <h5 class="card-title">{{product.product_name}}</h5>
+                            <p class="card-text title">{{product.description}}</p>
+                            <h6 class="mb-3">
+                                Price: <span id="pricepr{{product.id}}">{{product.price}}</span>
+                            </h6>
+                            <div class="quantity-select d-flex align-items-center mb-3">
+                                <label for="quantity{{product.id}}" class="me-2">Quantity:</label>
+                                <select id="quantity{{product.id}}" class="form-select form-select-sm" style="width: auto;">
+                                    {% for qty in quantities %}
+                                        <option value="{{ qty }}">{{ qty }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="mt-auto"> <!-- Use 'mt-auto' class to push the footer to the bottom -->
+                                <div class="text-center">
+                                    <button id="pr{{product.id}}" class="btn btn-danger cart btn-sm mt-0">
+                                        Add To Cart
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+
+
+{% block toast %}
+    {% include "ecommerceapp/__toast.html" %}
+{% endblock toast%}
+<script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+  
+
+<script>
+    $(document).ready(function() {
+        $(".cart").on('click',function(){
+            var check_product_id = $(this).attr('id');
+            var product_id = check_product_id.substring(2);
+            console.log(product_id)
+            var quantity = parseInt($("#quantity" + product_id).val());
+            console.log(quantity)
+            $.ajax({
+                type: "POST",
+                url: "{% url 'add_to_cart' %}",
+                headers: {
+                    "X-CSRFToken": "{{ csrf_token }}" // Include the CSRF token in the request headers
+                },
+                data:{
+                    'product_id' : product_id,
+                    'quantity': quantity,
+                    'user':'{{user_id}}'
+                },
+                success: function(response) {
+                    
+                    console.log(response);
+                    toastr.success('Item added to cart successfully');
+                    console.log(response);
+                    
+                },
+                error: function(xhr, errmsg, err) {
+                    // Handle error response from the backend
+                    toastr.error('error');
+                    //console.log(xhr.status + ": " + xhr.responseText);
+                },
+                complete: function(){
+                    $("body").css({overflow:'auto'})
+                    {% comment %} setTimeout(function(){
+                        $(".toast").hide();
+                        $(".toast").removeClass("success");
+                        $(".toast").removeClass("danger");
+                    },3000) {% endcomment %}
+                    {% comment %} $(".toast").show()
+                    $(".toast-body").html(
+                        `<h3>boom</h3>`
+                    ) {% endcomment %}
+                }
+            })
+        })
+    });
+</script>
+{% endblock %}
